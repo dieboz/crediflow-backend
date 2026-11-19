@@ -1,5 +1,6 @@
 # ---- Etapa 1: compilar ----
-FROM maven:3.9.9-eclipse-temurin-25 AS build
+FROM eclipse-temurin:25-jdk AS build
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace
 COPY store-credit-management/pom.xml ./
 RUN mvn -B -q dependency:go-offline
