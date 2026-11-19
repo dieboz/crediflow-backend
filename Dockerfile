@@ -1,11 +1,10 @@
 # ---- Etapa 1: compilar ----
-FROM eclipse-temurin:25-jdk AS build
+FROM maven:3.9.9-eclipse-temurin-25 AS build
 WORKDIR /workspace
-COPY store-credit-management/.mvn .mvn
-COPY store-credit-management/mvnw store-credit-management/pom.xml ./
-RUN chmod +x mvnw && ./mvnw -B -q dependency:go-offline
+COPY store-credit-management/pom.xml ./
+RUN mvn -B -q dependency:go-offline
 COPY store-credit-management/src src
-RUN ./mvnw -B -q -DskipTests package && cp target/*.jar app.jar
+RUN mvn -B -q -DskipTests package && cp target/*.jar app.jar
 
 # ---- Etapa 2: ejecutar ----
 FROM eclipse-temurin:25-jre
